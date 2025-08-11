@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: blog_db
+      MYSQL_USER: blog_user
+      MYSQL_PASSWORD: blog_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+
+  backend:
+    build: ./blog-backend
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/blog_db
+      SPRING_DATASOURCE_USERNAME: blog_user
+      SPRING_DATASOURCE_PASSWORD: blog_password
+      SERVER_ADDRESS: 0.0.0.0
+    restart: always
+
+  frontend:
+    build: ./blog-frontend
+    depends_on:
+      - backend
+    restart: always
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - backend
+    restart: always
+
+volumes:
+  mysql_data:
