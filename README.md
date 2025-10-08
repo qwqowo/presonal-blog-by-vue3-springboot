@@ -1,4 +1,6 @@
-简简单单docker build
+简简单单
+###
+docker build
 docker run -d \
   --name blog-mysql \
   --network blog-network \
@@ -13,29 +15,31 @@ docker run -d \
   -e MYSQL_USER=root \
   -e MYSQL_PASSWORD=root \
   mysql:5.7
-
-
+###
+###
 docker run -d \
   --name blog-backend \
   --network blog-network \
   --restart=always \
   -p 8080:8080 \
   qwqowo/blog-backend:latest
-
-
+###
+###
 docker run -d \
   --name blog-frontend \
   --network blog-network \
   --restart=always \
   -p 3000:80 \
   qwqowo/blog-frontend:latest
-
+###
 简简单单数据库
+###
 CREATE DATABASE `blog_database` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 
 -- blog_database.articles definition
-
+###
+###
 CREATE TABLE `articles` (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文章标题',
@@ -106,3 +110,5 @@ CREATE TABLE `categories` (
   KEY `idx_slug` (`slug`),
   CONSTRAINT `categories_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='分类表';
+
+###
